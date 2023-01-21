@@ -64,7 +64,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         fullname: "",
         profilepic: ""
       );
-      await _firestore.collection('users').doc(email).set(newUser.toMap())
+      await _firestore.collection('users').doc(uid).set(newUser.toMap())
       .then((value){
         print('Done');
         Navigator.popUntil(context, (route) => route.isFirst);

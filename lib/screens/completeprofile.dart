@@ -73,12 +73,12 @@ class _CompleteProfileState extends State<CompleteProfile> {
     }
   }
   TextEditingController fullnamecontroller = TextEditingController();
+  TextEditingController statuscontroller = TextEditingController();
 
 
   void checkvalues(){
     String fname = fullnamecontroller.text.trim();
     print(fname);
-
     if(fname == null||imagefile==null){
       UiHelper.showAlertDialog('Incomplete Data', context, 'Please Fill the field and choose image.');
       print("fill details");
@@ -99,6 +99,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
     String? fullname = fullnamecontroller.text.trim();
     widget.userModel.fullname = fullname;
     widget.userModel.profilepic = imageurl;
+    widget.userModel.status = statuscontroller.text.trim().toString();
     await FirebaseFirestore.instance.collection('users')
         .doc(widget.userModel.uid).set(widget.userModel.toMap()).then((value){
           print('data uploadedd...');
@@ -111,31 +112,35 @@ class _CompleteProfileState extends State<CompleteProfile> {
       appBar: AppBar(
         title: Text('Complete Profile'),
       ),
-      body: SafeArea(
-        child: Container(
-          margin: EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(height: 40,),
-              GestureDetector(
-                child: CircleAvatar(
-                  radius: 80.0,
-                  backgroundImage: check==false?null:FileImage(imagefile),
-                  child: check==false?Icon(Icons.person,size: 80.0,):null,
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Container(
+            margin: EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(height: 40,),
+                GestureDetector(
+                  child: CircleAvatar(
+                    radius: 80.0,
+                    backgroundImage: check==false?null:FileImage(imagefile),
+                    child: check==false?Icon(Icons.person,size: 80.0,):null,
+                  ),
+                  onTap: (){
+                    showphotooption();
+                  },
                 ),
-                onTap: (){
-                  showphotooption();
-                },
-              ),
-              SizedBox(height: 30,),
-              MyTextField(givencontroller: fullnamecontroller, hinttext: 'Enter Full Name', show: false),
-              RoundedButton(btncolor: Colors.blueAccent,label: 'Submit',ontap: (){
-                checkvalues();
-                Navigator.popUntil(context, (route) => route.isFirst);
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen(userModel: widget.userModel,firebaseUser: widget.firebaseuser,)));
-              },)
-            ],
+                SizedBox(height: 30,),
+                MyTextField(givencontroller: fullnamecontroller, hinttext: 'Enter Full Name', show: false),
+                SizedBox(height: 20,),
+                MyTextField(givencontroller: statuscontroller, hinttext: 'About', show: false),
+                RoundedButton(btncolor: Colors.blueAccent,label: 'Submit',ontap: (){
+                  checkvalues();
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen(userModel: widget.userModel,firebaseUser: widget.firebaseuser,)));
+                },)
+              ],
+            ),
           ),
         ),
       ),

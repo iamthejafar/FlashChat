@@ -6,8 +6,9 @@ class MessageModel{
   String? text;
   Timestamp? createdon;
   bool? seen;
+  String? imageurl;
 
-  MessageModel({this.sender,this.text,this.createdon,this.seen,this.messageid});
+  MessageModel({this.imageurl,this.sender,this.text,this.createdon,this.seen,this.messageid});
 
   MessageModel.fromMap(Map<String,dynamic> map){
     messageid = map['messageid'];
@@ -15,6 +16,7 @@ class MessageModel{
     text = map['text'];
     createdon = map['createdon'];
     seen = map['seen'];
+    imageurl = map['imageurl'];
   }
 
   Map<String,dynamic> toMap(){
@@ -23,7 +25,8 @@ class MessageModel{
       'text':text,
       'messageid': messageid,
       'createdon':createdon,
-      'seen':seen
+      'seen':seen,
+      'imageurl': imageurl
     };
   }
 

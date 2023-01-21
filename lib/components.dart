@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'constants.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 class RoundedButton extends StatelessWidget {
   late final Color btncolor;
   late final String label;
@@ -92,3 +96,68 @@ class _MyTextFieldState extends State<MyTextField> {
     );
   }
 }
+
+
+// class ShowPhotoDialog extends StatelessWidget {
+//    ShowPhotoDialog({Key? key}) : super(key: key);
+//   late File imagefile;
+//    showphotooption(BuildContext context){
+//      showDialog(context: context, builder: (context){
+//        return AlertDialog(
+//          title: Text('Upload Profile Pic',style: TextStyle(color: Colors.black45),),
+//          content: Column(
+//            mainAxisSize: MainAxisSize.min,
+//            children: [
+//              ListTile(
+//                onTap: () async{
+//                  Navigator.pop(context);
+//                  selectImage(ImageSource.gallery);
+//                },
+//                leading: Icon(Icons.photo_album),
+//                title: Text('Select From Gallery',),
+//              ),
+//              ListTile(
+//                onTap: (){
+//                  Navigator.pop(context);
+//                  selectImage(ImageSource.camera);
+//                },
+//                leading: Icon(Icons.camera_alt),
+//                title: Text('Open Camera',),
+//              )
+//            ],
+//          ),
+//        );
+//      });
+//    }
+//
+//    selectImage(ImageSource source) async{
+//      XFile ? pickedFile = await ImagePicker().pickImage(source: source);
+//      if(pickedFile!=null){
+//        cropImage(pickedFile);
+//      }
+//    }
+//    cropImage(XFile file) async {
+//      CroppedFile? croppedimaage = await ImageCropper().cropImage(
+//        sourcePath: file.path,
+//        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+//        compressQuality: 30,
+//      );
+//      if(croppedimaage!=null){
+//        final File imageFile = File(croppedimaage.path);
+//        imagefile = imageFile;
+//      }
+//    }
+//
+//    getImage(){
+//      return imagefile;
+//    }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center();
+//   }
+// }
+//
+//
+//
+//

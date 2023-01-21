@@ -27,6 +27,7 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
+  late UserModel targetUser;
   String fullname = '';
   String email='';
   String ppurl ='';
@@ -56,7 +57,8 @@ class _SearchScreenState extends State<SearchScreen> {
         participants: {
           widget.userModel.uid.toString(): true,
           newuser.uid.toString(): true,
-        }
+        },
+        users: [widget.userModel.uid.toString(),newuser.uid.toString()]
       );
       chatRoom = newchatroom;
       await _firestore.collection('chatrooms').doc(newchatroom.chatroomid)
@@ -72,82 +74,74 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Search'),
-        actions: [
-          GestureDetector(
-            child: Icon(Icons.logout),
-          onTap: ()async{
-              await FirebaseAuth.instance.signOut();
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>WelcomeScreen()));
-
-          },
-        )],
       ),
       body: SafeArea(
         child: Column(
           children: [
             SizedBox(height: 10,),
-            
             Container(
               margin: EdgeInsets.all(5),
                 child: MyTextField1(givencontroller: searchController, hinttext: 'Enter user email', show: false)),
-            RoundedButton(btncolor: Colors.blueAccent, label: 'Search', ontap: () async{
-              var doc = _firestore.collection('users').where('email',isEqualTo: searchController.text)
-              .where('email',isNotEqualTo: widget.userModel.email);
-              var userdoc = doc.get().then((value) =>{
-                print(value.docs.map((document) => {
+            RoundedButton(
+                btncolor: Colors.blueAccent,
+                label: 'Search',
+                ontap: () async{
                   setState(() {
-                    kcolor1 = Colors.black38;
-                    kcolor2 = Colors.blueAccent;
-                    fullname = document['fullname'];
-                    email = document['email'];
-                    ppurl = document['profilepic'];
-                    uid = document['uid'];
 
-                  }),
-                }))
-              });
-            }
+                  });
+                }
             ),
-            Container(
-              margin: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                color: kcolor2,
-                borderRadius: BorderRadius.circular(10)
-                
-              ),
-             
-              child: ListTile(
-                onTap: () async{
-                  UserModel targetUser = UserModel(
-                      fullname: fullname,
-                      email: email,
-                      uid: uid,
-                      profilepic: ppurl
-                  );
-                  ChatRoomModel? chatroom = await getChatroomModel(targetUser);
-                  if(chatroom!=null){
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context, MaterialPageRoute(
-                        builder: (context)=>ChatRomm(
-                          userModel: widget.userModel,
-                          targetUser: targetUser,
-                          firebaseuser: widget.firebaseUser,
-                          chatroom: chatroom,)));
+            StreamBuilder(
+              stream: _firestore.collection('users').where('email',isEqualTo: searchController.text)
+                  .where('email',isNotEqualTo: widget.userModel.email).snapshots(),
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                if(snapshot.connectionState == ConnectionState.active){
+                  if(snapshot.hasData){
+                    QuerySnapshot datasnap = snapshot.data as QuerySnapshot;
+                    if(datasnap.docs.length > 0){
+                      Map<String,dynamic> userMap = datasnap.docs[0].data() as Map<String,dynamic>;
+                      targetUser = UserModel.fromMap(userMap);
+                      // print('this one please ${newUser.fullname}');
+                      return ListTile(
+                        onTap: () async{
+                          ChatRoomModel? chatroom = await getChatroomModel(targetUser);
+                          if(chatroom!=null){
+                            Navigator.pop(context);
+                            Navigator.push(
+                                context, MaterialPageRoute(
+                                builder: (context)=>ChatRomm(
+                                  userModel: widget.userModel,
+                                  targetUser: targetUser,
+                                  firebaseUser: widget.firebaseUser,
+                                  chatroom: chatroom,)));
+                          }
+                          print(targetUser.profilepic);
+                        },
+                        leading: CircleAvatar(
+                          backgroundImage: targetUser.profilepic!=null?NetworkImage(targetUser.profilepic!):null,
+                          backgroundColor: targetUser.profilepic!=null?Colors.blueAccent:null,
+                        ),
+                        title: Text(targetUser.fullname.toString()),
+                        subtitle: Text(targetUser.email.toString()),
+                        trailing: Icon(Icons.message,color: Colors.blueAccent,),
+                      );
+
+                    }
+                    else{
+                      return Text('');
+                    }
+
                   }
-                },
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(ppurl),
-                  backgroundColor: kcolor1,
-                ),
-                title: Text(fullname),
-                subtitle: Text(email),
-                trailing: Icon(Icons.message,color: kcolor1,),
-              ),
-            )
+                  else{
+                    return Text('Has no data');
+                  }
+                }
+                else{
+                  return Text('connection issue');
+                }
 
-
-
+              },
+            ),
           ],
         ),
       ),
