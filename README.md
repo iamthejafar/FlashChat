@@ -23,13 +23,25 @@ Registeration Screen
 Complete Profile
 ![Screenshot_20230108_181122](https://user-images.githubusercontent.com/109048758/211196583-6fbe77d8-c3f6-40bd-a8c7-91588269e211.png)
 Home Screen
-![Screenshot_20230108_174753](https://user-images.githubusercontent.com/109048758/211196471-9ae8ce74-742d-4665-88e0-c8e8ec2350a9.png)
+![homescreen_ss](https://user-images.githubusercontent.com/109048758/213868134-46604ea3-8944-4bc8-833f-c0cc18eadabf.png)
 Search Screen
 ![Screenshot_20230108_174900](https://user-images.githubusercontent.com/109048758/211196473-4cb09fe4-2333-46b8-9bbc-464c9da8af7b.png)
 Chat Screen
-![Screenshot_20230108_174940](https://user-images.githubusercontent.com/109048758/211196475-874d9088-34ee-4260-9b37-30cf17c5a382.png)
+![msgscreen_ss](https://user-images.githubusercontent.com/109048758/213868150-f255cfd5-cab5-4745-bafa-6e6c21b46b83.png)
+
+User Profile
+
+
+![WhatsApp Image 2023-01-21 at 6 34 02 PM](https://user-images.githubusercontent.com/109048758/213868198-f3a372da-786a-4f8d-93c9-87cca28011fd.jpeg)
+
+
+Drawer
+![drawer_ss](https://user-images.githubusercontent.com/109048758/213868367-41817f45-9329-4c77-8a3a-2f95fc0b8073.png)
+Edit About
+![about_ss](https://user-images.githubusercontent.com/109048758/213868243-8ec4aeb1-2f7d-4415-a018-526644a10e57.png)
 Alerts
 ![Screenshot_20230108_175031](https://user-images.githubusercontent.com/109048758/211196477-9336bbf7-dcf5-42cb-b2a0-6e1c3b72e588.png)
+
 
 
 
